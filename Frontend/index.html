@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e commerce website</title>
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="Assests/logo.png" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>online e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="search-bar">
+                    <form id="search-form" action="search-results.html" method="get">
+                        <div class="search-input-wrapper">
+                            <select name="category" id="search-category" title="Select a category">
+                                <option value="all">All Categories</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="bags">Bags</option>
+                                <option value="footwear">Footwear</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="beauty">Beauty</option>
+                                <option value="wellness">Wellness</option>  
+                                <option value="jewellery">Jewellery</option>
+                            </select>
+                            <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                            <div id="search-suggestions" class="search-suggestions">
+                                <div class="suggestion-header">Popular Searches</div>
+                                <div class="recent-searches">
+                                    <div class="suggestion-header">Recent Searches</div>
+                                    <div id="recent-search-items"></div>
+                                </div>
+                                <div class="trending">
+                                    <div class="suggestion-header">Trending</div>
+                                    <div id="trending-items"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="login.html">Login</a>
+                    <span>|</span>
+                    <a href="register.html">Register</a>
+                    <div class="icon-group">
+                        <a href="cart.html" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">5</span>
+                        </a>
+                        <a href="wishlist.html" class="wishlist-icon">
+                            <i class="far fa-heart"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Section -->
+    <nav>
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="categories-dropdown">
+                    <button class="categories-btn">
+                        <i class="fas fa-bars"></i>
+                        SHOP BY CATEGORIES
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="category.html?category=fashion">Fashion</a>
+                        <a href="category.html?category=electronics">Electronics</a>
+                        <a href="category.html?category=bags">Bags</a>
+                        <a href="category.html?category=footwear">Footwear</a>
+                        <a href="category.html?category=groceries">Groceries</a>
+                        <a href="category.html?category=beauty">Beauty</a>
+                        <a href="category.html?category=wellness">Wellness</a>
+                        <a href="category.html?category=jewellery">Jewellery</a>
+                    </div>
+                </div>
+                
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="category.html?category=fashion">Fashion</a></li>
+                    <li><a href="category.html?category=electronics">Electronics</a></li>
+                    <li><a href="category.html?category=bags">Bags</a></li>
+                    <li><a href="category.html?category=footwear">Footwear</a></li>
+                    <li><a href="category.html?category=groceries">Groceries</a></li>
+                    <li><a href="category.html?category=beauty">Beauty</a></li>
+                    <li><a href="category.html?category=wellness">Wellness</a></li>
+                    <li><a href="category.html?category=jewellery">Jewellery</a></li>
+                </ul>
+                
+                <div class="shipping-info">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>Free International Delivery</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider Section -->
+
+
+    <!-- Category Icons Section -->
+    <section class="category-icons">
+        <div class="container">
+            <div class="category-grid">
+                <div class="category-item">
+                    <a href="category.html?category=fashion">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Fashion">
+                        </div>
+                        <h3>Fashion</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=electronics">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Electronics">
+                        </div>
+                        <h3>Electronics</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=bags">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Bags">
+                        </div>
+                        <h3>Bags</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=footwear">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Footwear">
+                        </div>
+                        <h3>Footwear</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=groceries">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Groceries">
+                        </div>
+                        <h3>Groceries</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=beauty">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Beauty">
+                        </div>
+                        <h3>Beauty</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=wellness">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Wellness">
+                        </div>
+                        <h3>Wellness</h3>
+                    </a>
+                </div>
+                <div class="category-item">
+                    <a href="category.html?category=jewellery">
+                        <div class="category-icon">
+                            <img src="/api/placeholder/80/80" alt="Jewellery">
+                        </div>
+                        <h3>Jewellery</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Featured Products</h2>
+            </div>
+            <div class="products-grid" id="featured-products-container">
+                <!-- Products will be loaded dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals Section -->
+    <section class="new-arrivals">
+        <div class="container">
+            <div class="section-heading">
+                <h2>New Arrivals</h2>
+            </div>
+            <div class="products-grid" id="new-arrivals-container">
+                <!-- Products will be loaded dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Deals Section -->
+    <section class="deals">
+        <div class="container">
+            <div class="deals-grid">
+                <div class="deal-item big-deal">
+                    <img src="/api/placeholder/600/300" alt="Special Offer">
+                    <div class="deal-content">
+                        <h3>Special Offer</h3>
+                        <p>Get up to 50% off on selected items</p>
+                        <a href="deals.html" class="btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <img src="/api/placeholder/300/200" alt="Electronics Sale">
+                    <div class="deal-content">
+                        <h3>Electronics Sale</h3>
+                        <p>Latest gadgets at best prices</p>
+                        <a href="category.html?category=electronics" class="btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <img src="/api/placeholder/300/200" alt="Fashion Trends">
+                    <div class="deal-content">
+                        <h3>Fashion Trends</h3>
+                        <p>New season styles</p>
+                        <a href="category.html?category=fashion" class="btn">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-heading">
+                <h2>What Our Customers Say</h2>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial active">
+                    <div class="testimonial-content">
+                        <p>"I love shopping at ClassyShop! The products are high quality and the delivery is always on time."</p>
+                        <div class="testimonial-author">
+                            <h4>Sarah Johnson</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Great variety of products and excellent customer service. Will definitely shop here again!"</p>
+                        <div class="testimonial-author">
+                            <h4>Michael Brown</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"The international shipping is truly free and fast. Amazing shopping experience!"</p>
+                        <div class="testimonial-author">
+                            <h4>Emma Wilson</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-controls">
+                    <button class="prev-testimony"><i class="fas fa-chevron-left"></i></button>
+                    <button class="next-testimony"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Get the latest updates on new products and special offers</p>
+                <form id="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About ClassyShop</h3>
+                    <p>ClassyShop is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="shipping.html">Shipping & Returns</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>My Account</h3>
+                    <ul>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Register</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                    <div class="payment-methods">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-amex"></i>
+                        <i class="fab fa-cc-paypal"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ClassyShop. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
