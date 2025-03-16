@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e commerce website</title>
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+   
+    <div class="container">
+        <!-- Navigation Bar -->
+        <div class="nav">
+            <div class="nav-brand"><div class="logo">
+                <a href="index.html">
+                    <img src="Assests/logo.png" alt="Logo">
+                    <div class="logo-text">
+                        <h1>Bazaar.com</h1>
+                        <p>online e-commerce</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+            <div class="nav-icons">
+                <a href="cart.html" class="nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="badge">3</span>
+                    <span class="icon-label">Cart</span>
+                </a>
+
+                <a href="wishlist.html" class="nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span class="badge">2</span>
+                    <span class="icon-label">Wishlist</span>
+                </a>
+               
+            </div>
+        </div>
+        
+        <!-- Cart with Items (shown by default) -->
+        <div class="cart-container" id="cart-with-items">
+            <h2 class="cart-title">Your Cart</h2>
+            
+            <!-- Cart Items -->
+            <div class="cart-item">
+                <div class="item-image"></div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <div>
+                            <div class="item-title">Product Name</div>
+                            <div class="item-category">Category</div>
+                        </div>
+                        <div class="item-price">$49.99</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="decreaseQuantity(1)">-</button>
+                            <div class="quantity-display" id="quantity-1">1</div>
+                            <button class="quantity-btn" onclick="increaseQuantity(1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(1)">Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-item">
+                <div class="item-image"></div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <div>
+                            <div class="item-title">Another Product</div>
+                            <div class="item-category">Different Category</div>
+                        </div>
+                        <div class="item-price">$29.99</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="decreaseQuantity(2)">-</button>
+                            <div class="quantity-display" id="quantity-2">2</div>
+                            <button class="quantity-btn" onclick="increaseQuantity(2)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem(2)">Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cart Totals -->
+            <div class="cart-totals">
+                <div class="totals-row">
+                    <div>Subtotal</div>
+                    <div>$109.97</div>
+                </div>
+                <button class="btn checkout-btn">Checkout</button>
+            </div>
+        </div>
+        
+        <!-- Empty Cart (hidden by default) -->
+        <div class="empty-cart" id="empty-cart" style="display: none;">
+            <div class="empty-message">Your bag is empty</div>
+            <a href="index.html" class="btn">Continue Shopping</a>
+        </div>
+    </div>
+
+</body>
+</html>
