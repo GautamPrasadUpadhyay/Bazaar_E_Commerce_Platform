@@ -1,3 +1,94 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.slider-container {
+    position: relative;
+    width: 80%;
+    max-width: 2000px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.dots {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.active {
+    background-color: #717171;
+}
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+.slide {
+    min-width: 100%;
+}
+.slide img {
+    width: 800px; /* Fixed width */
+    height: 400px; /* Fixed height */
+    object-fit: cover; /* Ensures images maintain aspect ratio and fill the space */
+    border-radius: 10px;
+}
+
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 18px;
+    border-radius: 5px;
+}
+.prev { left: 10px; }
+.next { right: 10px; }
+
+
+/* Style for the navbar */
+        .navbar {
+            /* Background color */
+            overflow: hidden;
+            position: fixed; /* Fixes the navbar to the top */
+            top: 0; /* Aligns it to the top of the page */
+            width: 100%; /* Full width */
+            z-index: 1000; /* Ensures it stays above other content */
+        }
+
+        /* Style for the links inside the navbar */
+        .navbar a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: ;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Change color on hover */
+        .navbar a:hover {
+            background-color: ;
+            color: ;
+        }
+
+        /* Content below the navbar */
+        .content {
+            margin-top: 0px; /* Adds space so content doesn't overlap with navbar */
+            padding: 0px;
+            height: 0px; /* Just for demonstration to enable scrolling */
+            background-color: #a80606;
+        }
+
 .search-bar {
     width: 100%;
     max-width: 600px;
@@ -59,7 +150,7 @@
     font-size: 14px;
     font-weight: 500;
     color: #878787;
-    background: #f9f9f9;
+    background: #690e0e;
 }
 
 .search-suggestion-item {
@@ -135,7 +226,7 @@ img {
 
 /* Header Styles */
 header {
-    background-color: #fff;
+    background-color: #f5f3f3;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     padding: 15px 0;
 }
@@ -991,7 +1082,7 @@ footer {
 
 /* Search Bar Styles */
 .expanded-search {
-    width: 450px; /* Increase width as needed */
+    width: 550px; /* Increase width as needed */
     height: 41px; /* Increase height as needed */
     font-size: 20px; /* Increase font size for better readability */
     padding: 10px 15px; /* Add more padding for better appearance */
@@ -1009,3 +1100,351 @@ footer {
         width: 100%;
     }
 }
+
+
+/* cart css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-icon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.icon-label {
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #f00;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.btn {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Cart Items */
+.cart-container {
+    margin-top: 20px;
+}
+
+.cart-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    flex-shrink: 0;
+}
+
+.item-details {
+    flex-grow: 1;
+    padding: 0 20px;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.item-title {
+    font-weight: bold;
+}
+
+.item-category {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.item-price {
+    font-weight: bold;
+}
+
+.item-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.quantity-control {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.quantity-display {
+    width: 40px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Cart Totals */
+.cart-totals {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.totals-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* Empty Cart */
+.empty-cart {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.empty-message {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-icon {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon-label {
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #f00;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.btn {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Wishlist Styles */
+.wishlist-container {
+    margin-top: 20px;
+}
+
+.wishlist-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.wishlist-item {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.wishlist-item-content {
+    display: flex;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    background-color: #f0f0f0;
+    flex-shrink: 0;
+}
+
+.wishlist-item-details {
+    margin-left: 15px;
+}
+
+.item-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.item-price {
+    color: #333;
+}
+
+.wishlist-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.wishlist-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+/* Empty Wishlist */
+.empty-wishlist {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.empty-message {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+

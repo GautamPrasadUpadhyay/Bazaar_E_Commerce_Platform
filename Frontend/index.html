@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e commerce website</title>
+    <title>Bazaar.com</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="feature.css">
   
 </head>
 <body>
+    
+    <div class="navbar">
     <!-- Header Section -->
     <header>
         <div class="container">
@@ -21,7 +24,7 @@
                         </div>
                     </a>
                 </div>
-                
+                <br> <br> 
                 <div class="search-bar">
                     <form id="search-form" action="search-results.html" method="get">
                         <div class="search-input-wrapper">
@@ -29,11 +32,11 @@
                                 <option value="all">All Categories</option>
                                 <option value="fashion">Fashion</option>
                                 <option value="electronics">Electronics</option>
-                                <option value="bags">Bags</option>
+                                <option value="bags">Sports</option>
                                 <option value="footwear">Footwear</option>
                                 <option value="groceries">Groceries</option>
                                 <option value="beauty">Beauty</option>
-                                <option value="wellness">Wellness</option>  
+                                <option value="wellness">Health and Wellness</option>  
                                 <option value="jewellery">Jewellery</option>
                             </select>
                             <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
@@ -52,25 +55,42 @@
                         </div>
                     </form>
                 </div>
+
+
+                <div class="nav-icons">
+                    <br>
+                    <a href="cart.html" class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span class="badge">3</span>
+                        <span class="icon-label">Cart</span>
+                    </a>
                 
+                    <a href="wishlist.html" class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span class="badge">2</span>
+                        <span class="icon-label">Wishlist</span>
+                    </a>
+                 </div>
+
+
                 <div class="user-actions">
                     <a href="login.html">Login</a>
                     <span>|</span>
                     <a href="register.html">Register</a>
-                    <div class="icon-group">
-                        <a href="cart.html" class="cart-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-count">5</span>
-                        </a>
-                        <a href="wishlist.html" class="wishlist-icon">
-                            <i class="far fa-heart"></i>
-                        </a>
-                    </div>
+                    
                 </div>
+
+            
             </div>
         </div>
     </header>
-
+</div>
     <!-- Navigation Section -->
     <nav>
         <div class="container">
@@ -83,24 +103,24 @@
                     <div class="dropdown-content">
                         <a href="category.html?category=fashion">Fashion</a>
                         <a href="category.html?category=electronics">Electronics</a>
-                        <a href="category.html?category=bags">Bags</a>
+                        <a href="category.html?category=bags">Sports</a>
                         <a href="category.html?category=footwear">Footwear</a>
                         <a href="category.html?category=groceries">Groceries</a>
                         <a href="category.html?category=beauty">Beauty</a>
-                        <a href="category.html?category=wellness">Wellness</a>
+                        <a href="category.html?category=wellness">Health and Wellness</a>
                         <a href="category.html?category=jewellery">Jewellery</a>
                     </div>
                 </div>
                 
                 <ul class="nav-links">
                     <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="category.html?category=fashion">Fashion</a></li>
-                    <li><a href="category.html?category=electronics">Electronics</a></li>
-                    <li><a href="category.html?category=bags">Bags</a></li>
+                    <li><a href="Assests/Fashion.png">Fashion</a></li>
+                    <li><a href="Assests/electronic.jpeg">Electronics</a></li>
+                    <li><a href="category.html?category=bags">Sports</a></li>
                     <li><a href="category.html?category=footwear">Footwear</a></li>
                     <li><a href="category.html?category=groceries">Groceries</a></li>
                     <li><a href="category.html?category=beauty">Beauty</a></li>
-                    <li><a href="category.html?category=wellness">Wellness</a></li>
+                    <li><a href="category.html?category=wellness">Health and Wellness</a></li>
                     <li><a href="category.html?category=jewellery">Jewellery</a></li>
                 </ul>
                 
@@ -112,8 +132,10 @@
         </div>
     </nav>
 
+
     <!-- Hero Slider Section -->
 
+    <br><br>
 
     <!-- Category Icons Section -->
     <section class="category-icons">
@@ -122,7 +144,7 @@
                 <div class="category-item">
                     <a href="category.html?category=fashion">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Fashion">
+                            <img src="Assests/fashion.jpg" alt="Fashion">
                         </div>
                         <h3>Fashion</h3>
                     </a>
@@ -130,7 +152,7 @@
                 <div class="category-item">
                     <a href="category.html?category=electronics">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Electronics">
+                            <img src="Assests/electronic.jpeg" alt="Electronics">
                         </div>
                         <h3>Electronics</h3>
                     </a>
@@ -138,15 +160,15 @@
                 <div class="category-item">
                     <a href="category.html?category=bags">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Bags">
+                            <img src="Assests/sports.jpg" alt="Bags">
                         </div>
-                        <h3>Bags</h3>
+                        <h3>Sports</h3>
                     </a>
                 </div>
                 <div class="category-item">
                     <a href="category.html?category=footwear">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Footwear">
+                            <img src="Assests/footwear.jpg" alt="Footwear">
                         </div>
                         <h3>Footwear</h3>
                     </a>
@@ -154,7 +176,7 @@
                 <div class="category-item">
                     <a href="category.html?category=groceries">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Groceries">
+                            <img src="Assests/groceries.jpg" alt="Groceries">
                         </div>
                         <h3>Groceries</h3>
                     </a>
@@ -162,7 +184,7 @@
                 <div class="category-item">
                     <a href="category.html?category=beauty">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Beauty">
+                            <img src="Assests/beauty.webp" alt="Beauty">
                         </div>
                         <h3>Beauty</h3>
                     </a>
@@ -170,15 +192,15 @@
                 <div class="category-item">
                     <a href="category.html?category=wellness">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Wellness">
+                            <img src="Assests/wellness.jpeg" alt="Wellness">
                         </div>
-                        <h3>Wellness</h3>
+                        <h3>Health and Wellness</h3>
                     </a>
                 </div>
                 <div class="category-item">
                     <a href="category.html?category=jewellery">
                         <div class="category-icon">
-                            <img src="/api/placeholder/80/80" alt="Jewellery">
+                            <img src="Assests/jwelleries.jpeg" alt="Jewellery">
                         </div>
                         <h3>Jewellery</h3>
                     </a>
@@ -192,12 +214,15 @@
         <div class="container">
             <div class="section-heading">
                 <h2>Featured Products</h2>
-            </div>
-            <div class="products-grid" id="featured-products-container">
-                <!-- Products will be loaded dynamically via JavaScript -->
-            </div>
+               
         </div>
-    </section>
+        
+    </section> 
+   
+
+
+  
+    <br><br>
 
     <!-- New Arrivals Section -->
     <section class="new-arrivals">
@@ -242,7 +267,8 @@
             </div>
         </div>
     </section>
-
+      
+    <br><br>
     <!-- Testimonials Section -->
     <section class="testimonials">
         <div class="container">
@@ -252,9 +278,9 @@
             <div class="testimonials-slider">
                 <div class="testimonial active">
                     <div class="testimonial-content">
-                        <p>"I love shopping at ClassyShop! The products are high quality and the delivery is always on time."</p>
+                        <p>"I love shopping at Bazaar.com! The products are high quality and the delivery is always on time."</p>
                         <div class="testimonial-author">
-                            <h4>Sarah Johnson</h4>
+                            <h4>Gautam Prasad Upadhyay</h4>
                             <div class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -269,7 +295,7 @@
                     <div class="testimonial-content">
                         <p>"Great variety of products and excellent customer service. Will definitely shop here again!"</p>
                         <div class="testimonial-author">
-                            <h4>Michael Brown</h4>
+                            <h4>Tony Stark</h4>
                             <div class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -280,11 +306,12 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="testimonial">
                     <div class="testimonial-content">
                         <p>"The international shipping is truly free and fast. Amazing shopping experience!"</p>
                         <div class="testimonial-author">
-                            <h4>Emma Wilson</h4>
+                            <h4>Samay Raina</h4>
                             <div class="rating">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -302,8 +329,9 @@
             </div>
         </div>
     </section>
-
-    <!-- Newsletter Section -->
+   
+    <!-- 
+    
     <section class="newsletter">
         <div class="container">
             <div class="newsletter-content">
@@ -316,14 +344,15 @@
             </div>
         </div>
     </section>
+-->
 
     <!-- Footer Section -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>About ClassyShop</h3>
-                    <p>ClassyShop is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
+                    <h3>About Bazaar.com</h3>
+                    <p>Bazaar.com is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
                 </div>
                 <div class="footer-column">
                     <h3>Customer Service</h3>
@@ -360,7 +389,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 ClassyShop. All Rights Reserved.</p>
+                <p>&copy; 2025 Bazaar.com. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
