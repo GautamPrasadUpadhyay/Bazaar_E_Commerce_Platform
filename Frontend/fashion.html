@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazaar.com</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="navbar">
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="Assests/logo.png" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>online e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+                <br> <br> 
+                <div class="search-bar">
+                    <form id="search-form" action="search-results.html" method="get">
+                        <div class="search-input-wrapper">
+                            <select name="category" id="search-category" title="Select a category">
+                                <option value="all">All Categories</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="bags">Sports</option>
+                                <option value="footwear">Footwear</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="beauty">Beauty</option>
+                                <option value="wellness">Health and Wellness</option>  
+                                <option value="jewellery">Jewellery</option>
+                            </select>
+                            <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                            <div id="search-suggestions" class="search-suggestions">
+                                <div class="suggestion-header">Popular Searches</div>
+                                <div class="recent-searches">
+                                    <div class="suggestion-header">Recent Searches</div>
+                                    <div id="recent-search-items"></div>
+                                </div>
+                                <div class="trending">
+                                    <div class="suggestion-header">Trending</div>
+                                    <div id="trending-items"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="nav-icons">
+                    <br>
+                    <a href="cart.html" class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span class="badge">3</span>
+                        <span class="icon-label">Cart</span>
+                    </a>
+                
+                    <a href="wishlist.html" class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span class="badge">2</span>
+                        <span class="icon-label">Wishlist</span>
+                    </a>
+                 </div>
+
+
+                <div class="user-actions">
+                    <a href="login.html">Login</a>
+                    <span>|</span>
+                    <a href="register.html">Register</a>
+                    
+                </div>
+
+            
+            </div>
+        </div>
+    </header>
+</div>
+</head>
+<body>
+    
+  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: white;
+        }
+        .section-heading {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .product-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .product-card .price {
+            font-weight: bold;
+            color: #e91e63;
+        }
+        .product-card button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product-card button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    
+ <br><br><br>
+
+    <div class="container">
+        <!-- Featured Section -->
+        <div class="section-heading">
+            <h2>Featured Fashion Items</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Floral Maxi Dress">
+                <h3>Floral Maxi Dress</h3>
+                <p>Light and breezy for summer vibes</p>
+                <p class="price">$39.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Leather Sneakers">
+                <h3>Leather Sneakers</h3>
+                <p>Classic comfort meets modern style</p>
+                <p class="price">$59.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Gold Hoop Earrings">
+                <h3>Gold Hoop Earrings</h3>
+                <p>Elegant and timeless accessory</p>
+                <p class="price">$24.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Denim Jacket">
+                <h3>Denim Jacket</h3>
+                <p>A wardrobe essential for all seasons</p>
+                <p class="price">$49.99</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- New Arrivals Section -->
+        <div class="section-heading">
+            <h2>New Arrivals</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Silk Scarf">
+                <h3>Silk Scarf</h3>
+                <p>Vibrant colors, just in!</p>
+                <p class="price">$19.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Chunky Knit Sweater">
+                <h3>Chunky Knit Sweater</h3>
+                <p>Cozy up with this latest drop</p>
+                <p class="price">$44.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Ankle Boots">
+                <h3>Ankle Boots</h3>
+                <p>Trendy and fresh off the line</p>
+                <p class="price">$69.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Leather Crossbody Bag">
+                <h3>Leather Crossbody Bag</h3>
+                <p>Newest addition to our collection</p>
+                <p class="price">$34.99</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- All Fashion Categories -->
+        <div class="section-heading">
+            <h2>Shop All Fashion</h2>
+        </div>
+        <div class="product-grid">
+            <!-- Clothing -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Men's Graphic Tee">
+                <h3>Men's Graphic Tee</h3>
+                <p>Casual style with bold prints</p>
+                <p class="price">$19.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Women's Blazer">
+                <h3>Women's Blazer</h3>
+                <p>Sharp and professional</p>
+                <p class="price">$54.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <!-- Footwear -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Running Shoes">
+                <h3>Running Shoes</h3>
+                <p>Lightweight and durable</p>
+                <p class="price">$79.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="High Heels">
+                <h3>High Heels</h3>
+                <p>Elevate your evening look</p>
+                <p class="price">$49.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <!-- Accessories -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Sunglasses">
+                <h3>Sunglasses</h3>
+                <p>UV protection with style</p>
+                <p class="price">$29.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Woven Belt">
+                <h3>Woven Belt</h3>
+                <p>Versatile and chic</p>
+                <p class="price">$14.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <!-- Jewelry -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Silver Necklace">
+                <h3>Silver Necklace</h3>
+                <p>Delicate and stunning</p>
+                <p class="price">$34.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/250x300" alt="Cuff Bracelet">
+                <h3>Cuff Bracelet</h3>
+                <p>Bold statement piece</p>
+                <p class="price">$22.99</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
