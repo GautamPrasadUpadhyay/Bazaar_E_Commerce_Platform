@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion - Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>online e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="search-bar">
+                    <form id="search-form" action="search-results.html" method="get">
+                        <div class="search-input-wrapper">
+                            <select name="category" id="search-category" title="Select a category">
+                                <option value="all">All</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="bags">Sports</option>
+                                <option value="footwear">Footwear</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="beauty">Beauty</option>
+                                <option value="wellness">Health and Wellness</option>  
+                                <option value="jewellery">Jewellery</option>
+                            </select>
+                            <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="nav-icons">
+                    <a href="{{ url_for('cart') }}" class="nav-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge">3</span>
+                        <span class="icon-label">Cart</span>
+                    </a>
+                
+                    <a href="{{ url_for('wishlist') }}" class="nav-icon">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">2</span>
+                        <span class="icon-label">Wishlist</span>
+                    </a>
+                </div>
+
+                <div class="user-actions">
+                    {% if current_user.is_authenticated %}
+                        <div class="user-welcome">
+                            <i class="fas fa-user-circle"></i>
+                            <div class="user-info">
+                                <span class="welcome-text">Welcome,</span>
+                                <span class="username">{{ current_user.username }}</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                        <span>|</span>
+                        <a href="{{ url_for('register') }}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="category-page">
+        <div class="category-banner">
+            <div class="banner-content">
+                <h1>Fashion Collection</h1>
+                <p>Discover the latest trends in fashion</p>
+            </div>
+        </div>
+
+        <div class="category-content">
+            <div class="category-filters">
+                <h3>Filters</h3>
+                <div class="filter-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#" class="active">All</a></li>
+                        <li><a href="#">Men</a></li>
+                        <li><a href="#">Women</a></li>
+                        <li><a href="#">Kids</a></li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <ul>
+                        <li><a href="#">Under $25</a></li>
+                        <li><a href="#">$25 - $50</a></li>
+                        <li><a href="#">$50 - $100</a></li>
+                        <li><a href="#">Over $100</a></li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h4>Sort By</h4>
+                    <ul>
+                        <li><a href="#">Newest First</a></li>
+                        <li><a href="#">Price: Low to High</a></li>
+                        <li><a href="#">Price: High to Low</a></li>
+                        <li><a href="#">Popular</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    {% if product.badge %}
+                    <span class="product-badge {{ product.badge }}">{{ product.badge }}</span>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename='Assests/fashionstyle.jpg') }}" alt="{{ product.name }}">
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p class="product-category">{{ product.category }}</p>
+                        <div class="product-rating">
+                            {% for i in range(5) %}
+                                {% if i < product.rating|int %}
+                                    <i class="fas fa-star"></i>
+                                {% elif i < product.rating %}
+                                    <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span>{{ product.rating }}</span>
+                        </div>
+                        <p class="product-price">${{ "%.2f"|format(product.price) }}</p>
+                        <div class="product-actions">
+                            <button class="add-to-cart">Add to Cart</button>
+                            <button class="add-to-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist"><i class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Bazaar.com</h3>
+                    <p>Bazaar.com is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="shipping.html">Shipping & Returns</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>My Account</h3>
+                    <ul>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                        <li><a href="{{ url_for('wishlist') }}">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/gautam-prasad-upadhyay-291531296/" title="LinkedIn"><img src="{{ url_for('static', filename='Assests/Linkedin.webp') }}" alt="LinkedIn"></a>
+                        <a href="https://github.com/GautamPrasadUpadhyay" title="GitHub"><img src="{{ url_for('static', filename='Assests/github.png') }}" alt="GitHub"></a>
+                        <a href="https://x.com/GautamlUpadhyay" title="Twitter"><img src="{{ url_for('static', filename='Assests/twitter.svg') }}" alt="Twitter"></a>
+                        <a href="https://www.instagram.com/gautam.upadhyay.9085/" title="Instagram"><img src="{{ url_for('static', filename='Assests/instagram.svg') }}" alt="Instagram"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bazaar.com. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 

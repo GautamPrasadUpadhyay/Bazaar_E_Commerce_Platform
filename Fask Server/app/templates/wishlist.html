@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist - Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>online e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="wishlist-page">
+        <div class="container">
+            <div class="wishlist-header">
+                <h1><i class="fas fa-heart"></i> My Wishlist</h1>
+                <a href="{{ url_for('index') }}" class="continue-shopping">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            {% if wishlist_items %}
+            <div class="wishlist-grid">
+                {% for item in wishlist_items %}
+                <div class="wishlist-item">
+                    <div class="item-image">
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                        <button class="remove-from-wishlist" onclick="removeFromWishlist({{ item.id }})" title="Remove from wishlist">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="item-details">
+                        <h3>{{ item.name }}</h3>
+                        <p class="item-category">{{ item.category }}</p>
+                        <div class="item-price">₹{{ "%.2f"|format(item.price) }}</div>
+                        <div class="item-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart({{ item.id }})" title="Add to cart">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-wishlist">
+                <i class="fas fa-heart"></i>
+                <h2>Your wishlist is empty</h2>
+                <p>Save items you love in your wishlist and review them anytime.</p>
+                <a href="{{ url_for('index') }}" class="start-shopping-btn">
+                    Start Shopping <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        function removeFromWishlist(itemId) {
+            // Add AJAX call to remove from wishlist
+            console.log(`Remove item ${itemId} from wishlist`);
+        }
+
+        function addToCart(itemId) {
+            // Add AJAX call to add to cart
+            console.log(`Add item ${itemId} to cart`);
+        }
+    </script>
+</body>
+</html> 

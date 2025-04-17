@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>online e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="cart-page">
+        <div class="container">
+            <div class="cart-header">
+                <h1><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
+                <a href="{{ url_for('index') }}" class="continue-shopping">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            {% if cart_items %}
+            <div class="cart-content">
+                <div class="cart-items">
+                    {% for item in cart_items %}
+                    <div class="cart-item">
+                        <div class="item-image">
+                            <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                        </div>
+                        <div class="item-details">
+                            <div class="item-header">
+                                <h3>{{ item.name }}</h3>
+                                <button class="remove-item" onclick="removeFromCart({{ item.id }})" title="Remove item">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <p class="item-category">{{ item.category }}</p>
+                            <div class="item-price">₹{{ "%.2f"|format(item.price) }}</div>
+                            <div class="item-actions">
+                                <div class="quantity-controls">
+                                    <button onclick="updateQuantity({{ item.id }}, 'decrease')" title="Decrease quantity">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <span class="quantity">{{ item.quantity }}</span>
+                                    <button onclick="updateQuantity({{ item.id }}, 'increase')" title="Increase quantity">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="item-total">
+                                    Total: ₹{{ "%.2f"|format(item.price * item.quantity) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span>₹{{ "%.2f"|format(total_price) }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total</span>
+                        <span>₹{{ "%.2f"|format(total_price) }}</span>
+                    </div>
+                    <button class="checkout-btn">
+                        Proceed to Checkout <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added anything to your cart yet.</p>
+                <a href="{{ url_for('index') }}" class="start-shopping-btn">
+                    Start Shopping <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        function updateQuantity(itemId, action) {
+            // Add AJAX call to update quantity
+            console.log(`Update ${action} for item ${itemId}`);
+        }
+
+        function removeFromCart(itemId) {
+            // Add AJAX call to remove item
+            console.log(`Remove item ${itemId}`);
+        }
+    </script>
+</body>
+</html> 
