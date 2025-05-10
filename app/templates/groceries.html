@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion - Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .order-now-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-left: 8px;
+        }
+
+        .order-now-btn:hover {
+            background-color: #8a081c;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 10px;
+        }
+
+        .product-card {
+            position: relative;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: visible;
+            transition: transform 0.3s ease;
+            background: white;
+        }
+
+        .product-image {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .product-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .quick-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .quick-actions button {
+            background: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .quick-actions button:hover {
+            transform: scale(1.1);
+        }
+
+        .quick-actions button.added {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .quick-actions .add-to-cart-btn {
+            background-color: rgb(8, 1, 1);
+        }
+
+        .quick-actions .add-to-wishlist-btn {
+            background-color: white;
+        }
+
+        .quick-actions .add-to-cart-btn:hover,
+        .quick-actions .add-to-wishlist-btn:hover {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .quick-actions .add-to-cart-btn.added,
+        .quick-actions .add-to-wishlist-btn.added {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .order-now-btn {
+            width: 100%;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .order-now-btn:hover {
+            background-color: #ff6b81;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="navbar">
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                        <div class="logo-text">
+                            <h1>Bazaar.com</h1>
+                            <p>e-commerce</p>
+                        </div>
+                    </a>
+                </div>
+                <br> <br> 
+                <div class="search-bar">
+                    <form id="search-form" action="search-results.html" method="get">
+                        <div class="search-input-wrapper">
+                            <select name="category" id="search-category" title="Select a category">
+                                <option value="all">All</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="bags">Sports</option>
+                                <option value="footwear">Footwear</option>
+                                <option value="groceries">Groceries</option>
+                                <option value="beauty">Beauty</option>
+                                <option value="wellness">Health</option>  
+                                <option value="jewellery">Jewellery</option>
+                            </select>
+                            <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                            
+                           
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="nav-icons">
+                    <a href="{{ url_for('cart') }}" class="nav-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge">3</span>
+                        <span class="icon-label">Cart</span>
+                    </a>
+                
+                    <a href="{{ url_for('wishlist') }}" class="nav-icon">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge">2</span>
+                        <span class="icon-label">Wishlist</span>
+                    </a>
+                 </div>
+
+
+                <div class="user-actions">
+                    {% if current_user.is_authenticated %}
+                        <div class="user-welcome">
+                            <i class="fas fa-user-circle"></i>
+                            <div class="user-info">
+                                <div>
+                                    <span class="welcome-text">WELCOME,</span>
+                                    <br>
+                                    <span class="username">{{ current_user.username }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                        <span>|</span>
+                        <a href="{{ url_for('register') }}">Register</a>
+                    {% endif %}
+                </div>
+
+            
+            </div>
+        </div>
+    </header>
+</div>
+<br><br><br><br>
+    <main class="fashion-page">
+        <div class="container">
+            <div class="fashion-content">
+                <!-- Left Sidebar Filters -->
+                <aside class="filters-sidebar">
+                    <div class="filter-section">
+                        <h3>Delivery Day</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="get-it-today">
+                                <label for="get-it-today">Get It Today</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="get-it-tomorrow">
+                                <label for="get-it-tomorrow">Get It Tomorrow</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="within-2-days">
+                                <label for="within-2-days">Get It in 2 Days</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Category</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="ethnic-wear">
+                                <label for="ethnic-wear">Ethnic Wear</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="western-wear">
+                                <label for="western-wear">Western Wear</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="casual-wear">
+                                <label for="casual-wear">Casual Wear</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="formal-wear">
+                                <label for="formal-wear">Formal Wear</label>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Price Range</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="under-500">
+                                <label for="under-500">Under ₹500</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="500-1000">
+                                <label for="500-1000">₹500 - ₹1,000</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="1000-2000">
+                                <label for="1000-2000">₹1,000 - ₹2,000</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="above-2000">
+                                <label for="above-2000">Above ₹2,000</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3>Brand</h3>
+                        <ul>
+                            <li>
+                                <input type="checkbox" id="brand-1">
+                                <label for="brand-1">Leriya Fashion</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="brand-2">
+                                <label for="brand-2">MIRCHI FASHION</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="brand-3">
+                                <label for="brand-3">Suri Fashion</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="filter-btn" title="Apply filters">Apply</button>
+                    <button class="clear-btn" title="Clear all filters">Clear</button>
+                </aside>
+
+                <!-- Main Content Area -->
+                <div class="products-section">
+                    <div class="products-header">
+                        <h2>Fashion Collection</h2>
+                        <div class="sort-options">
+                            <select name="sort" id="sort" title="Sort products">
+                                <option value="popular">Most Popular</option>
+                                <option value="newest">Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Customer Rating</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="products-grid">
+                        {% for product in products %}
+                        <div class="product-card" data-product-id="{{ product.id }}">
+                            <div class="product-image">
+                                <div class="quick-actions">
+                                    <button class="add-to-cart-btn" onclick="toggleCart('{{ product.id }}')" title="Add to Cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                    <button class="add-to-wishlist-btn" onclick="toggleWishlist('{{ product.id }}')" title="Add to Wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ product.name }}</h3>
+                                <div class="product-rating">
+                                    {% for i in range(5) %}
+                                        {% if i < product.rating|int %}
+                                            <i class="fas fa-star"></i>
+                                        {% elif i < product.rating %}
+                                            <i class="fas fa-star-half-alt"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="rating-count">({{ product.rating }})</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">₹{{ "%.2f"|format(product.price) }}</span>
+                                    {% if product.original_price %}
+                                    <span class="original-price">₹{{ "%.2f"|format(product.original_price) }}</span>
+                                    <span class="discount">{{ ((product.original_price - product.price) / product.original_price * 100)|round|int }}% off</span>
+                                    {% endif %}
+                                </div>
+                                <div class="delivery-info">
+                                    <i class="fas fa-truck"></i>
+                                    <span>FREE delivery Tomorrow</span>
+                                </div>
+                                <button class="order-now-btn" onclick="Order_Now('{{ product.id }}')">
+                                    Order Now
+                                </button>
+                                
+                                <script>
+                                    function Order_Now(productId) {
+                                        // Redirect to orders page with the product ID as a query parameter
+                                        window.location.href = `/orders?product_id=${productId}`;
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Filter Toggle Button for Mobile -->
+    <button class="filter-toggle" id="filterToggle">
+        <i class="fas fa-filter"></i> Filters
+    </button>
+
+    <!-- Success Message Toast -->
+    <div class="toast-container">
+        <div id="successToast" class="toast">
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span id="toastMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Bazaar.com</h3>
+                    <p>Bazaar.com is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="shipping.html">Shipping & Returns</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>My Account</h3>
+                    <ul>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                        <li><a href="{{ url_for('wishlist') }}">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/gautam-prasad-upadhyay-291531296/" title="LinkedIn"><img src="{{ url_for('static', filename='Assests/Linkedin.webp') }}" alt="LinkedIn"></a>
+                        <a href="https://github.com/GautamPrasadUpadhyay" title="GitHub"><img src="{{ url_for('static', filename='Assests/github.png') }}" alt="GitHub"></a>
+                        <a href="https://x.com/GautamlUpadhyay" title="Twitter"><img src="{{ url_for('static', filename='Assests/twitter.svg') }}" alt="Twitter"></a>
+                        <a href="https://www.instagram.com/gautam.upadhyay.9085/" title="Instagram"><img src="{{ url_for('static', filename='Assests/instagram.svg') }}" alt="Instagram"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bazaar.com. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Get CSRF token from meta tag
+        function getCSRFToken() {
+            return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        }
+
+        // Show toast message
+        function showToast(message) {
+            const toast = document.getElementById('successToast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Check item status for all products
+        function checkItemStatus() {
+            document.querySelectorAll('.product-card').forEach(card => {
+                const productId = card.dataset.productId;
+                fetch('/check-item-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const cartBtn = card.querySelector('.add-to-cart-btn');
+                        const wishlistBtn = card.querySelector('.add-to-wishlist-btn');
+                        
+                        if (data.in_cart) {
+                            cartBtn.classList.add('added');
+                        }
+                        if (data.in_wishlist) {
+                            wishlistBtn.classList.add('added');
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        }
+
+        // Toggle cart status
+        function toggleCart(productId) {
+            const card = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+            const cartBtn = card.querySelector('.add-to-cart-btn');
+            
+            // Get product data from the card
+            const productData = {
+                product_id: productId,
+                name: card.querySelector('.product-title').textContent,
+                price: parseFloat(card.querySelector('.current-price').textContent.replace('₹', '')),
+                image: card.querySelector('.product-image img').getAttribute('src').split('/').pop(),
+                category: 'Fashion'  // You can make this dynamic if needed
+            };
+            
+            fetch('/add-to-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify(productData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    cartBtn.classList.add('added');
+                    showToast(data.message);
+                    // Update cart count in header
+                    const cartBadge = document.querySelector('.nav-icon .badge');
+                    if (cartBadge) {
+                        cartBadge.textContent = data.cart_count;
+                    }
+                } else {
+                    showToast(data.message || 'Failed to add item to cart');
+                }
+            })
+            .catch(error => {
+                showToast('Error adding item to cart');
+                console.error('Error:', error);
+            });
+        }
+
+        // Toggle wishlist status
+        function toggleWishlist(productId) {
+            const card = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+            const wishlistBtn = card.querySelector('.add-to-wishlist-btn');
+            
+            fetch('/add-to-wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    wishlistBtn.classList.add('added');
+                    showToast(data.message);
+                    // Update wishlist count in header
+                    const wishlistBadge = document.querySelector('.nav-icon .badge');
+                    if (wishlistBadge) {
+                        wishlistBadge.textContent = data.wishlist_count;
+                    }
+                } else {
+                    showToast(data.message || 'Failed to add item to wishlist');
+                }
+            })
+            .catch(error => {
+                showToast('Error adding item to wishlist');
+                console.error('Error:', error);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check item status for all products when page loads
+            if (document.querySelector('.product-card')) {
+                checkItemStatus();
+            }
+        });
+
+        // Filter toggle functionality
+        const filterToggle = document.getElementById('filterToggle');
+        const filtersSidebar = document.querySelector('.filters-sidebar');
+
+        filterToggle.addEventListener('click', () => {
+            filtersSidebar.classList.toggle('active');
+        });
+
+        // Close filters when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!filtersSidebar.contains(e.target) && e.target !== filterToggle) {
+                filtersSidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Now - Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="ordernow.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="navbar">
+        <header>
+            <div class="container">
+                <div class="header-wrapper">
+                    <div class="logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                            <div class="logo-text">
+                                <h1>Bazaar.com</h1>
+                                <p>e-commerce</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="nav-icons">
+                        <a href="{{ url_for('cart') }}" class="nav-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="icon-label">Cart</span>
+                        </a>
+                        <a href="{{ url_for('wishlist') }}" class="nav-icon">
+                            <i class="fas fa-heart"></i>
+                            <span class="icon-label">Wishlist</span>
+                        </a>
+                    </div>
+                    <div class="user-actions">
+                        {% if current_user.is_authenticated %}
+                            <div class="user-welcome">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="username">{{ current_user.username }}</span>
+                            </div>
+                            <a href="{{ url_for('logout') }}" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}">Login</a>
+                            <span>|</span>
+                            <a href="{{ url_for('register') }}">Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Order Process Steps -->
+    <div class="order-steps">
+        <div class="step active" id="step1">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Order Summary</span>
+        </div>
+        <div class="step" id="step2">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Delivery Address</span>
+        </div>
+        <div class="step" id="step3">
+            <i class="fas fa-credit-card"></i>
+            <span>Payment</span>
+        </div>
+        <div class="step" id="step4">
+            <i class="fas fa-check-circle"></i>
+            <span>Confirmation</span>
+        </div>
+    </div>
+
+    <!-- Order Summary Section -->
+    <section id="orderSummarySection" class="order-section">
+        <div class="container">
+            <div class="order-summary-item" data-product-id="{{ product.id }}">
+                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+                <div class="item-details">
+                    <h3>{{ product.name }}</h3>
+                    <p class="order-summary-item-price">₹{{ product.price }}</p>
+                    <p class="item-description">{{ product.description }}</p>
+                </div>
+            </div>
+            <div class="order-total">
+                <div class="order-total-item subtotal">
+                    <span>Subtotal:</span>
+                    <span>₹{{ product.price }}</span>
+                </div>
+                <div class="order-total-item shipping">
+                    <span>Shipping:</span>
+                    <span>₹50</span>
+                </div>
+                <div class="order-total-item total">
+                    <span>Total:</span>
+                    <span>₹{{ product.price + 50 }}</span>
+                </div>
+            </div>
+            <button class="proceed-btn" onclick="proceedToAddress()">Proceed to Delivery</button>
+        </div>
+    </section>
+
+    <!-- Delivery Address Section -->
+    <section id="deliveryAddressSection" class="order-section" style="display: none;">
+        <div class="container">
+            <form id="addressForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" name="pincode" required>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn" onclick="backToSummary()">Back</button>
+                    <button type="button" class="proceed-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+                </div>
+    </form>
+        </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section id="paymentSection" class="order-section" style="display: none;">
+        <div class="container">
+            <div class="payment-methods">
+                <div class="payment-method" onclick="selectPaymentMethod('card')">
+                    <i class="fas fa-credit-card"></i>
+                    <h3>Credit/Debit Card</h3>
+                    <p>Pay securely with your card</p>
+                </div>
+                <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>UPI</h3>
+                    <p>Pay using UPI</p>
+                </div>
+                <div class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                    <i class="fas fa-university"></i>
+                    <h3>Net Banking</h3>
+                    <p>Pay using Net Banking</p>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="back-btn" onclick="backToAddress()">Back</button>
+                <button class="proceed-btn" onclick="placeOrder()">Place Order</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Section -->
+    <section id="successSection" class="order-section" style="display: none;">
+        <div class="container">
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h2>Order Placed Successfully!</h2>
+                <p>Your order ID: <span id="orderId"></span></p>
+                <p>Estimated delivery: <span id="deliveryDate"></span></p>
+                <button class="continue-shopping-btn" onclick="window.location.href='{{ url_for('index') }}'">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Bazaar.com</h3>
+                    <p>Bazaar.com is a premier online destination for all your shopping needs.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>My Account</h3>
+                    <ul>
+                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                        <li><a href="{{ url_for('wishlist') }}">Wishlist</a></li>
+                        <li><a href="#">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bazaar.com. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/ordernow.js') }}"></script>
+</body>
+</html>

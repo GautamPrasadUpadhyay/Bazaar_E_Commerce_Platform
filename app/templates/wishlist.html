@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist | Bazaar.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a4af4;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #4a4af4;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-icons a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+            position: relative;
+        }
+        
+        .nav-icons a:hover {
+            color: #4a4af4;
+        }
+        
+        .nav-icons .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .wishlist-header {
+            margin-bottom: 30px;
+        }
+        
+        .wishlist-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .wishlist-header p {
+            color: #666;
+        }
+        
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        
+        .wishlist-item {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .wishlist-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .item-image {
+            height: 200px;
+            width: 100%;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .remove-btn:hover {
+            background-color: #ff4757;
+            color: white;
+        }
+        
+        .item-details {
+            padding: 15px;
+        }
+        
+        .item-category {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .item-price {
+            font-weight: 700;
+            color: #4a4af4;
+            margin-bottom: 15px;
+        }
+        
+        .item-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .add-to-cart {
+            background-color: #4a4af4;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #3939d0;
+        }
+        
+        .empty-wishlist {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .empty-wishlist h2 {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .empty-wishlist p {
+            margin-bottom: 30px;
+            color: #888;
+        }
+        
+        .browse-btn {
+            display: inline-block;
+            background-color: #4a4af4;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .browse-btn:hover {
+            background-color: #3939d0;
+        }
+        
+        .categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .category-tab {
+            padding: 8px 16px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-tab:hover, .category-tab.active {
+            background-color: #4a4af4;
+            color: white;
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #4a4af4;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #999;
+        }
+        
+        @media (max-width: 768px) {
+            .wishlist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .item-image {
+                height: 150px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <!-- Header Section -->
+        <header>
+            <div class="container">
+                <div class="header-wrapper">
+                    <div class="logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                            <div class="logo-text">
+                                <h1>Bazaar.com</h1>
+                                <p>e-commerce</p>
+                            </div>
+                        </a>
+                    </div>
+                    <br> <br> 
+                    <div class="search-bar">
+                        <form id="search-form" action="search-results.html" method="get">
+                            <div class="search-input-wrapper">
+                                <select name="category" id="search-category" title="Select a category">
+                                    <option value="all">All</option>
+                                    <option value="fashion">Fashion</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="bags">Sports</option>
+                                    <option value="footwear">Footwear</option>
+                                    <option value="groceries">Groceries</option>
+                                    <option value="beauty">Beauty</option>
+                                    <option value="wellness">Health</option>  
+                                    <option value="jewellery">Jewellery</option>
+                                </select>
+                                <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                                
+                               
+                            </div>
+                        </form>
+                    </div>
+    
+    
+                    <div class="nav-icons">
+                        <a href="{{ url_for('cart') }}" class="nav-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge">3</span>
+                            <span class="icon-label">Cart</span>
+                        </a>
+                    
+                        <a href="{{ url_for('wishlist') }}" class="nav-icon">
+                            <i class="fas fa-heart"></i>
+                            <span class="badge">2</span>
+                            <span class="icon-label">Wishlist</span>
+                        </a>
+                     </div>
+    
+    
+                    <div class="user-actions">
+                        {% if current_user.is_authenticated %}
+                            <div class="user-welcome">
+                                <i class="fas fa-user-circle"></i>
+                                <div class="user-info">
+                                    <div>
+                                        <span class="welcome-text">WELCOME,</span>
+                                        <br>
+                                        <span class="username">{{ current_user.username }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('logout') }}" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}">Login</a>
+                            <span>|</span>
+                            <a href="{{ url_for('register') }}">Register</a>
+                        {% endif %}
+                    </div>
+    
+                
+                </div>
+            </div>
+        </header>
+    </div>
+<br><br><br><br><br>
+    
+    <div class="container">
+        <div class="wishlist-header">
+            <h1>My Wishlist</h1>
+            <p>5 items saved to your wishlist</p>
+        </div>
+        
+       
+        
+        <div class="wishlist-grid">
+            <!-- Item 1 -->
+            <div class="wishlist-item">
+                <div class="item-image">
+                    <img src="{{ url_for('static', filename='Assests/fashion/t-shirt.jpg') }}" alt="T Shirt">
+                    <button class="remove-btn" title="Remove from wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="item-details">
+                    <div class="item-category">Fashion</div>
+                    <div class="item-name">T Shirt</div>
+                    <div class="item-price">₹24.99</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Item 2 -->
+            <div class="wishlist-item">
+                <div class="item-image">
+                    <img src="{{ url_for('static', filename='Assests/fashion/t-shirt.jpg') }}" alt="Jeans pants">
+                    
+                </div>
+                <div class="item-details">
+                    <div class="item-category">Footwear</div>
+                    <div class="item-name">Pro Running Shoes</div>
+                    <div class="item-price">$129.99</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Item 3 -->
+            <div class="wishlist-item">
+                <div class="item-image">
+                    <img src="/api/placeholder/200/200" alt="Wireless Earbuds">
+                    <button class="remove-btn" title="Remove from wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="item-details">
+                    <div class="item-category">Electronics</div>
+                    <div class="item-name">Wireless Earbuds Pro</div>
+                    <div class="item-price">$149.99</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Item 4 -->
+            <div class="wishlist-item">
+                <div class="item-image">
+                    <img src="/api/placeholder/200/200" alt="Summer Dress">
+                    <button class="remove-btn" title="Remove from wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="item-details">
+                    <div class="item-category">Fashion</div>
+                    <div class="item-name">Summer Floral Dress</div>
+                    <div class="item-price">$89.99</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Item 5 -->
+            <div class="wishlist-item">
+                <div class="item-image">
+                    <img src="/api/placeholder/200/200" alt="Tennis Racket">
+                    <button class="remove-btn" title="Remove from wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="item-details">
+                    <div class="item-category">Sports</div>
+                    <div class="item-name">Professional Tennis Racket</div>
+                    <div class="item-price">$199.99</div>
+                    <div class="item-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty state (hidden by default) -->
+        <div class="empty-wishlist" style="display: none;">
+            <h2>Your wishlist is empty</h2>
+            <p>Explore our catalog and save items you love for later!</p>
+            <a href="#" class="browse-btn">Browse Products</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Bazaar.com</h3>
+                    <p>Bazaar.com is a premier online destination for all your shopping needs. We offer high-quality products across various categories.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="shipping.html">Shipping & Returns</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>My Account</h3>
+                    <ul>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                        <li><a href="{{ url_for('wishlist') }}">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/gautam-prasad-upadhyay-291531296/" title="LinkedIn"><img src="{{ url_for('static', filename='Assests/Linkedin.webp') }}" alt="LinkedIn"></a>
+                        <a href="https://github.com/GautamPrasadUpadhyay" title="GitHub"><img src="{{ url_for('static', filename='Assests/github.png') }}" alt="GitHub"></a>
+                        <a href="https://x.com/GautamlUpadhyay" title="Twitter"><img src="{{ url_for('static', filename='Assests/twitter.svg') }}" alt="Twitter"></a>
+                        <a href="https://www.instagram.com/gautam.upadhyay.9085/" title="Instagram"><img src="{{ url_for('static', filename='Assests/instagram.svg') }}" alt="Instagram"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bazaar.com. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple toggle for empty state demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeBtns = document.querySelectorAll('.remove-btn');
+            const wishlistGrid = document.querySelector('.wishlist-grid');
+            const emptyState = document.querySelector('.empty-wishlist');
+            const wishlistCounter = document.querySelector('.nav-icons .badge');
+            const wishlistCount = document.querySelector('.wishlist-header p');
+            
+            let itemCount = 5;
+            
+            removeBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const item = this.closest('.wishlist-item');
+                    item.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        item.remove();
+                        itemCount--;
+                        wishlistCounter.textContent = itemCount;
+                        wishlistCount.textContent = `${itemCount} items saved to your wishlist`;
+                        
+                        if (itemCount === 0) {
+                            wishlistGrid.style.display = 'none';
+                            emptyState.style.display = 'block';
+                        }
+                    }, 300);
+                });
+            });
+            
+            // Category tabs functionality
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real implementation, this would filter the wishlist items
+                });
+            });
+        });
+    </script>
+</body>
+</html>

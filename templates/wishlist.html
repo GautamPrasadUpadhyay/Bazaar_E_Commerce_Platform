@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block title %}My Wishlist - Bazaar.com{% endblock %}
+
+{% block content %}
+<div class="wishlist-container">
+    <h1 class="wishlist-title">My Wishlist</h1>
+    
+    {% if wishlist_items %}
+    <div class="wishlist-grid">
+        {% for item in wishlist_items %}
+        <div class="wishlist-item" data-product-id="{{ item.product_id }}">
+            <div class="wishlist-item-image">
+                <img src="{{ item.image_url }}" alt="{{ item.name }}">
+            </div>
+            <div class="wishlist-item-details">
+                <h3 class="item-name">{{ item.name }}</h3>
+                <div class="price-container">
+                    <span class="current-price">${{ "%.2f"|format(item.price) }}</span>
+                    {% if item.original_price and item.original_price > item.price %}
+                    <span class="original-price">${{ "%.2f"|format(item.original_price) }}</span>
+                    <span class="discount-badge">
+                        {{ ((1 - item.price/item.original_price) * 100)|round|int }}% OFF
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="item-category">{{ item.category }}</div>
+            </div>
+            <div class="wishlist-item-actions">
+                <button class="add-to-cart-btn" onclick="addToCart({{ item.product_id }})">
+                    Add to Cart
+                </button>
+                <button class="remove-from-wishlist-btn" onclick="removeFromWishlist({{ item.product_id }})">
+                    Remove
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-wishlist">
+        <div class="empty-wishlist-message">
+            <i class="fas fa-heart-broken"></i>
+            <h2>Your wishlist is empty</h2>
+            <p>Browse our products and add items you love to your wishlist!</p>
+            <a href="{{ url_for('index') }}" class="browse-products-btn">Browse Products</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.wishlist-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.wishlist-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.wishlist-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.wishlist-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.wishlist-item-image {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+}
+
+.wishlist-item-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wishlist-item-details {
+    padding: 1rem;
+}
+
+.item-name {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: #333;
+}
+
+.price-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.current-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.discount-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.item-category {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.wishlist-item-actions {
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.add-to-cart-btn,
+.remove-from-wishlist-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.add-to-cart-btn {
+    background: #3498db;
+    color: white;
+}
+
+.add-to-cart-btn:hover {
+    background: #2980b9;
+}
+
+.remove-from-wishlist-btn {
+    background: #f1f1f1;
+    color: #333;
+}
+
+.remove-from-wishlist-btn:hover {
+    background: #e1e1e1;
+}
+
+.empty-wishlist {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-wishlist-message {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.empty-wishlist-message i {
+    font-size: 4rem;
+    color: #95a5a6;
+    margin-bottom: 1rem;
+}
+
+.empty-wishlist-message h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.empty-wishlist-message p {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.browse-products-btn {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.browse-products-btn:hover {
+    background: #2980b9;
+}
+
+@media (max-width: 768px) {
+    .wishlist-container {
+        padding: 1rem;
+    }
+    
+    .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+    }
+}
+</style>
+
+<script>
+function addToCart(productId) {
+    fetch(`/add-to-cart/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update cart count in navbar
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount) {
+                cartCount.textContent = data.cart_count;
+            }
+            
+            // Show success message
+            showToast('Item added to cart successfully!', 'success');
+        } else {
+            showToast(data.message || 'Error adding item to cart', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error adding item to cart', 'error');
+    });
+}
+
+function removeFromWishlist(productId) {
+    fetch(`/remove-from-wishlist/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Remove item from DOM
+            const item = document.querySelector(`.wishlist-item[data-product-id="${productId}"]`);
+            if (item) {
+                item.remove();
+            }
+            
+            // Update wishlist count in navbar
+            const wishlistCount = document.querySelector('.wishlist-count');
+            if (wishlistCount) {
+                wishlistCount.textContent = data.wishlist_count;
+            }
+            
+            // Show empty state if no items left
+            if (data.wishlist_count === 0) {
+                location.reload();
+            }
+            
+            showToast('Item removed from wishlist', 'success');
+        } else {
+            showToast(data.message || 'Error removing item from wishlist', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error removing item from wishlist', 'error');
+    });
+}
+
+function showToast(message, type = 'info') {
+    // Check if toast container exists, if not create it
+    let toastContainer = document.querySelector('.toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container';
+        document.body.appendChild(toastContainer);
+    }
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    // Add toast to container
+    toastContainer.appendChild(toast);
+    
+    // Remove toast after animation
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => {
+            toast.remove();
+            if (toastContainer.children.length === 0) {
+                toastContainer.remove();
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Add toast styles if not already present
+if (!document.querySelector('#toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'toast-styles';
+    style.textContent = `
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .toast {
+            background: white;
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            animation: slide-in 0.3s ease-out;
+        }
+        
+        .toast-success {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .toast-error {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .toast.fade-out {
+            animation: fade-out 0.3s ease-out forwards;
+        }
+        
+        @keyframes slide-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fade-out {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+</script>
+{% endblock %} 

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Order</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 30px auto;
+            max-width: 800px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #e0e0e0;
+            z-index: 0;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+            z-index: 1;
+        }
+
+        .step {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 4px solid #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #999;
+            z-index: 2;
+            position: relative;
+        }
+
+        .step.active {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+
+        .step.completed {
+            border-color: #4CAF50;
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .step-label {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #777;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        /* Order Form Container */
+        .order-container {
+            display: flex;
+            gap: 30px;
+            margin: 40px auto;
+        }
+
+        .form-section {
+            flex: 3;
+        }
+
+        .order-summary {
+            flex: 2;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            align-self: flex-start;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Form Sections */
+        .form-panel {
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .panel-heading {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .panel-heading i {
+            margin-right: 10px;
+            color: #4CAF50;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .payment-method {
+            flex: 1;
+            min-width: 130px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #4CAF50;
+        }
+
+        .payment-method.selected {
+            border-color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .payment-method-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Payment Forms */
+        .payment-form {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        /* Order Summary Styles */
+        .summary-heading {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .item-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 4px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-category {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .price-details {
+            margin-top: 20px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .price-row.total {
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #43a047;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        .btn-outline:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input {
+            margin-right: 8px;
+        }
+
+        /* Coupon Section */
+        .coupon-section {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .coupon-input {
+            flex: 1;
+        }
+
+        /* Success Panel */
+        .success-panel {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .success-heading {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        .order-info {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            text-align: left;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #777;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .order-container {
+                flex-direction: column;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .step-label {
+                display: none;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <!-- Header Section -->
+        <header>
+            <div class="container">
+                <div class="header-wrapper">
+                    <div class="logo">
+                        <a href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='Assests/logo.png') }}" alt="Logo">
+                            <div class="logo-text">
+                                <h1>Bazaar.com</h1>
+                                <p>e-commerce</p>
+                            </div>
+                        </a>
+                    </div>
+                    <br> <br> 
+                    <div class="search-bar">
+                        <form id="search-form" action="search-results.html" method="get">
+                            <div class="search-input-wrapper">
+                                <select name="category" id="search-category" title="Select a category">
+                                    <option value="all">All</option>
+                                    <option value="fashion">Fashion</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="bags">Sports</option>
+                                    <option value="footwear">Footwear</option>
+                                    <option value="groceries">Groceries</option>
+                                    <option value="beauty">Beauty</option>
+                                    <option value="wellness">Health</option>  
+                                    <option value="jewellery">Jewellery</option>
+                                </select>
+                                <input type="text" name="query" id="search-input" placeholder="Search for products, brands and more..." autocomplete="off">
+                                
+                               
+                            </div>
+                        </form>
+                    </div>
+    
+    
+                    <div class="nav-icons">
+                        <a href="{{ url_for('cart') }}" class="nav-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge">3</span>
+                            <span class="icon-label">Cart</span>
+                        </a>
+                    
+                        <a href="{{ url_for('wishlist') }}" class="nav-icon">
+                            <i class="fas fa-heart"></i>
+                            <span class="badge">2</span>
+                            <span class="icon-label">Wishlist</span>
+                        </a>
+    
+                       
+                     </div>
+    
+    
+                    <div class="user-actions">
+                        {% if current_user.is_authenticated %}
+                            <div class="user-welcome">
+                                <i class="fas fa-user-circle"></i>
+                                <div class="user-info">
+                                    <div>
+                                        <span class="welcome-text">WELCOME,</span>
+                                        <br>
+                                        <span class="username">{{ current_user.username }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('logout') }}" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}">Login</a>
+                            <span>|</span>
+                            <a href="{{ url_for('register') }}">Register</a>
+                        {% endif %}
+                    </div>
+    
+                
+                </div>
+            </div>
+        </header>
+    </div>
+    <br><br><br><br>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-bar" style="width: 0%"></div>
+                <div class="step active" id="step1">
+                    1
+                    <span class="step-label">Order Summary</span>
+                </div>
+                <div class="step" id="step2">
+                    2
+                    <span class="step-label">Shipping</span>
+                </div>
+                <div class="step" id="step3">
+                    3
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="step" id="step4">
+                    4
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-container">
+            <div class="form-section">
+                <!-- Step 1: Order Summary -->
+                <div class="form-panel" id="orderSummaryPanel">
+                    <div class="panel-heading">
+                        <i class="fas fa-shopping-cart"></i> Order Summary
+                    </div>
+                    <div class="panel-body">
+                        <p>Please review your order before proceeding to shipping details.</p>
+                        <div class="form-group">
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="standardDelivery" name="deliveryType" checked>
+                                    <label for="standardDelivery">Standard Delivery (3-5 days)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="expressDelivery" name="deliveryType">
+                                    <label for="expressDelivery">Express Delivery (1-2 days)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="coupon-section">
+                            <input type="text" class="form-control coupon-input" placeholder="Enter coupon code">
+                            <button class="btn btn-outline">Apply</button>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" onclick="window.history.back()">Back to Shopping</button>
+                            <button class="btn btn-primary" onclick="nextStep(1)">Continue to Shipping</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Shipping Details -->
+                <div class="form-panel" id="shippingPanel" style="display: none;">
+                    <div class="panel-heading">
+                        <i class="fas fa-truck"></i> Shipping Details
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address Line 1</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address Line 2 (Optional)</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Country</label>
+                                    <select class="form-control" required>
+                                        <option value="">Select Country</option>
+                                        <option value="IN">India</option>
+                                        <option value="US">United States</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="CA">Canada</option>
+                                        <option value="AU">Australia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Delivery Instructions (Optional)</label>
+                            <textarea class="form-control" placeholder="Special instructions for delivery"></textarea>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" onclick="prevStep(2)">Back to Order Summary</button>
+                            <button class="btn btn-primary" onclick="nextStep(2)">Continue to Payment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Payment Details -->
+                <div class="form-panel" id="paymentPanel" style="display: none;">
+                    <div class="panel-heading">
+                        <i class="fas fa-credit-card"></i> Payment Method
+                    </div>
+                    <div class="panel-body">
+                        <div class="payment-methods">
+                            <div class="payment-method selected" onclick="selectPayment('card')">
+                                <i class="fas fa-credit-card"></i>
+                                <span class="payment-method-title">Credit/Debit Card</span>
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('upi')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span class="payment-method-title">UPI Payment</span>
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('netbanking')">
+                                <i class="fas fa-university"></i>
+                                <span class="payment-method-title">Net Banking</span>
+                            </div>
+                            <div class="payment-method" onclick="selectPayment('cod')">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span class="payment-method-title">Cash on Delivery</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Payment Form -->
+                        <div class="payment-form active" id="cardPayment">
+                            <div class="form-group">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" placeholder="MM/YY">
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-control" placeholder="123">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cardholder Name</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                            </div>
+                        </div>
+
+                        <!-- UPI Payment Form -->
+                        <div class="payment-form" id="upiPayment">
+                            <div class="form-group">
+                                <label class="form-label">UPI ID</label>
+                                <input type="text" class="form-control" placeholder="username@upi">
+                            </div>
+                        </div>
+
+                        <!-- Net Banking Form -->
+                        <div class="payment-form" id="netbankingPayment">
+                            <div class="form-group">
+                                <label class="form-label">Select Bank</label>
+                                <select class="form-control">
+                                    <option value="">Select your bank</option>
+                                    <option value="sbi">State Bank of India</option>
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="axis">Axis Bank</option>
+                                    <option value="bob">Bank of Baroda</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- COD Form -->
+                        <div class="payment-form" id="codPayment">
+                            <p>Pay the full amount when your order is delivered.</p>
+                            <p>Note: Cash on Delivery may not be available for all products or locations.</p>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" onclick="prevStep(3)">Back to Shipping</button>
+                            <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Order Confirmation -->
+                <div class="form-panel" id="confirmationPanel" style="display: none;">
+                    <div class="success-panel">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2 class="success-heading">Order Placed Successfully!</h2>
+                        <p>Thank you for your purchase. We've received your order and will process it shortly.</p>
+                        
+                        <div class="order-info">
+                            <div class="info-row">
+                                <span class="info-label">Order Number:</span>
+                                <span id="orderNumber">ORD-2025428-39578</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Order Date:</span>
+                                <span id="orderDate">April 28, 2025</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Estimated Delivery:</span>
+                                <span id="deliveryDate">May 2 - May 4, 2025</span>
+                            </div>
+                        </div>
+                        
+                        <p>An email confirmation has been sent to your registered email address.</p>
+                        <button class="btn btn-primary" onclick="window.location.href='index.html'" style="margin-top: 20px;">Continue Shopping</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h3 class="summary-heading">Order Items</h3>
+                <div class="order-item">
+                    <img src="/api/placeholder/70/70" alt="Product" class="item-image">
+                    <div class="item-details">
+                        <h4 class="item-name">Smart Watch Pro</h4>
+                        <p class="item-category">Electronics</p>
+                        <p class="item-price">₹8,999</p>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <img src="/api/placeholder/70/70" alt="Product" class="item-image">
+                    <div class="item-details">
+                        <h4 class="item-name">Running Shoes</h4>
+                        <p class="item-category">Footwear</p>
+                        <p class="item-price">₹2,999</p>
+                    </div>
+                </div>
+                <div class="price-details">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <span>₹11,998</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Shipping</span>
+                        <span>₹99</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Tax</span>
+                        <span>₹600</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span>₹12,697</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle progressing to next step
+        function nextStep(currentStep) {
+            // Hide current panel
+            document.getElementById(getPanelId(currentStep)).style.display = 'none';
+            
+            // Show next panel
+            document.getElementById(getPanelId(currentStep + 1)).style.display = 'block';
+            
+            // Update progress steps
+            document.getElementById('step' + currentStep).classList.add('completed');
+            document.getElementById('step' + (currentStep + 1)).classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar(currentStep + 1);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Function to handle going back to previous step
+        function prevStep(currentStep) {
+            // Hide current panel
+            document.getElementById(getPanelId(currentStep)).style.display = 'none';
+            
+            // Show previous panel
+            document.getElementById(getPanelId(currentStep - 1)).style.display = 'block';
+            
+            // Update progress steps
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep - 1)).classList.remove('completed');
+            document.getElementById('step' + (currentStep - 1)).classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar(currentStep - 1);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Function to handle payment method selection
+        function selectPayment(method) {
+            // Remove selected class from all payment methods
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(pm => pm.classList.remove('selected'));
+            
+            // Add selected class to clicked payment method
+            event.currentTarget.classList.add('selected');
+            
+            // Hide all payment forms
+            const paymentForms = document.querySelectorAll('.payment-form');
+            paymentForms.forEach(form => form.classList.remove('active'));
+            
+            // Show selected payment form
+            document.getElementById(method + 'Payment').classList.add('active');
+        }
+        
+        // Function to simulate placing an order
+        function placeOrder() {
+            // Hide payment panel
+            document.getElementById('paymentPanel').style.display = 'none';
+            
+            // Show confirmation panel
+            document.getElementById('confirmationPanel').style.display = 'block';
+            
+            // Update progress steps
+            document.getElementById('step3').classList.add('completed');
+            document.getElementById('step4').classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar(4);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Helper function to get panel ID based on step number
+        function getPanelId(step) {
+            const panels = ['orderSummaryPanel', 'shippingPanel', 'paymentPanel', 'confirmationPanel'];
+            return panels[step - 1];
+        }
+        
+        // Helper function to update progress bar width
+        function updateProgressBar(step) {
+            const progressPercentage = (step - 1) * 33.33;
+            document.querySelector('.progress-bar').style.width = progressPercentage + '%';
+        }
+    </script>
+</body>
+</html>

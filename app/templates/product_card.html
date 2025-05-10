@@ -1,0 +1,44 @@
+{% macro product_card(product) %}
+<div class="product-card" data-product-id="{{ product.id }}">
+    <div class="product-image">
+        <img src="{{ url_for('static', filename=product.image_url) }}" alt="{{ product.name }}">
+        <div class="quick-actions">
+            <button class="cart-btn" onclick="toggleCart('{{ product.id }}')" title="Add to Cart">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button class="wishlist-btn" onclick="toggleWishlist('{{ product.id }}')" title="Add to Wishlist">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+        {% if product.badge %}
+        <span class="product-badge {{ product.badge }}">{{ product.badge }}</span>
+        {% endif %}
+    </div>
+    <div class="product-info">
+        <h3 class="product-title">{{ product.name }}</h3>
+        <div class="product-price">
+            <span class="current-price">₹{{ "%.2f"|format(product.price) }}</span>
+            {% if product.original_price and product.original_price > product.price %}
+            <span class="original-price">₹{{ "%.2f"|format(product.original_price) }}</span>
+            <span class="discount-badge">
+                {{ ((1 - product.price/product.original_price) * 100)|round|int }}% OFF
+            </span>
+            {% endif %}
+        </div>
+        <div class="product-rating">
+            <div class="stars">
+                {% for i in range(5) %}
+                    {% if i < product.rating|int %}
+                    <i class="fas fa-star"></i>
+                    {% elif (product.rating - i)|round(1) >= 0.5 %}
+                    <i class="fas fa-star-half-alt"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span class="rating-value">{{ "%.1f"|format(product.rating) }}</span>
+        </div>
+    </div>
+</div>
+{% endmacro %} 
